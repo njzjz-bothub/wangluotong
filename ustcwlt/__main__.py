@@ -3,10 +3,18 @@
 from __future__ import annotations
 
 import argparse
+import logging
 import os
 import sys
 
 import requests
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+)
+logger = logging.getLogger(__name__)
 
 
 def main() -> None:
@@ -14,14 +22,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Log in to USTC WLT (wlt.ustc.edu.cn)",
     )
+
+    # Get environment variables
+    env_username = os.environ.get("USTCWLT_USERNAME")
+    env_password = os.environ.get("USTCWLT_PASSWORD")
+
     parser.add_argument(
         "--username",
-        default=os.environ.get("USTCWLT_USERNAME"),
+        default=env_username,
+        required=env_username is None,
         help="Username for USTC WLT (or set USTCWLT_USERNAME)",
     )
     parser.add_argument(
         "--password",
-        default=os.environ.get("USTCWLT_PASSWORD"),
+        default=env_password,
+        required=env_password is None,
         help="Password for USTC WLT (or set USTCWLT_PASSWORD)",
     )
     parser.add_argument(
@@ -39,12 +54,6 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    # Validate required arguments
-    if not args.username:
-        parser.error("--username is required (or set USTCWLT_USERNAME)")
-    if not args.password:
-        parser.error("--password is required (or set USTCWLT_PASSWORD)")
-
     # Prepare the request data
     data = {
         "cmd": "set",
@@ -60,9 +69,9 @@ def main() -> None:
         response = requests.post(url, data=data, timeout=10)
         response.raise_for_status()
         # Note: Using HTTP as specified by the USTC WLT service
-        print("Login successful!")  # noqa: T201
+        logger.info("Login successful!")
     except requests.exceptions.RequestException as e:
-        print(f"Login failed: {e}", file=sys.stderr)  # noqa: T201
+        logger.error("Login failed: %s", e)  # noqa: TRY400
         sys.exit(1)
 
 

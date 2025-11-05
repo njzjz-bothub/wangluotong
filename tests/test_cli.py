@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import sys
 from unittest.mock import MagicMock, patch
 
@@ -41,7 +42,7 @@ def test_cli_missing_username(
         main()
     assert exc_info.value.code == 2
     captured = capsys.readouterr()
-    assert "--username is required" in captured.err
+    assert "required: --username" in captured.err
 
 
 def test_cli_missing_password(
@@ -60,28 +61,30 @@ def test_cli_missing_password(
         main()
     assert exc_info.value.code == 2
     captured = capsys.readouterr()
-    assert "--password is required" in captured.err
+    assert "required: --password" in captured.err
 
 
 @patch("ustcwlt.__main__.requests.post")
 def test_cli_success(
     mock_post: MagicMock,
-    capsys: pytest.CaptureFixture[str],
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test successful CLI login."""
     mock_response = MagicMock()
     mock_response.text = "Success"
     mock_post.return_value = mock_response
 
-    with patch.object(
-        sys,
-        "argv",
-        ["ustcwlt", "--username", "testuser", "--password", "testpass"],
+    with (
+        caplog.at_level(logging.INFO),
+        patch.object(
+            sys,
+            "argv",
+            ["ustcwlt", "--username", "testuser", "--password", "testpass"],
+        ),
     ):
         main()
 
-    captured = capsys.readouterr()
-    assert "Login successful!" in captured.out
+    assert "Login successful!" in caplog.text
 
     # Verify the request was made correctly
     mock_post.assert_called_once()
@@ -155,12 +158,13 @@ def test_cli_with_env_vars(
 @patch("ustcwlt.__main__.requests.post")
 def test_cli_request_failure(
     mock_post: MagicMock,
-    capsys: pytest.CaptureFixture[str],
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test CLI with request failure."""
     mock_post.side_effect = requests.exceptions.RequestException("Network error")
 
     with (
+        caplog.at_level(logging.ERROR),
         pytest.raises(SystemExit) as exc_info,
         patch.object(
             sys,
@@ -171,6 +175,5 @@ def test_cli_request_failure(
         main()
 
     assert exc_info.value.code == 1
-    captured = capsys.readouterr()
-    assert "Login failed:" in captured.err
-    assert "Network error" in captured.err
+    assert "Login failed:" in caplog.text
+    assert "Network error" in caplog.text
