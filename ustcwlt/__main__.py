@@ -59,7 +59,8 @@ def main() -> None:
     try:
         response = requests.post(url, data=data, timeout=10)
         response.raise_for_status()
-        print(f"Login successful! Response: {response.text}")  # noqa: T201
+        # Note: Using HTTP as specified by the USTC WLT service
+        print("Login successful!")  # noqa: T201
     except requests.exceptions.RequestException as e:
         print(f"Login failed: {e}", file=sys.stderr)  # noqa: T201
         sys.exit(1)

@@ -44,8 +44,15 @@ def test_cli_missing_username(
     assert "--username is required" in captured.err
 
 
-def test_cli_missing_password(capsys: pytest.CaptureFixture[str]) -> None:
+def test_cli_missing_password(
+    capsys: pytest.CaptureFixture[str],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     """Test CLI with missing password."""
+    # Clear any environment variables
+    monkeypatch.delenv("USTCWLT_USERNAME", raising=False)
+    monkeypatch.delenv("USTCWLT_PASSWORD", raising=False)
+
     with (
         pytest.raises(SystemExit) as exc_info,
         patch.object(sys, "argv", ["ustcwlt", "--username", "testuser"]),
@@ -75,7 +82,6 @@ def test_cli_success(
 
     captured = capsys.readouterr()
     assert "Login successful!" in captured.out
-    assert "Success" in captured.out
 
     # Verify the request was made correctly
     mock_post.assert_called_once()
