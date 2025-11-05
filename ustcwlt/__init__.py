@@ -1,4 +1,4 @@
-"""A Python template (please revise this docstring)."""
+"""A command-line tool to log in to USTC WLT."""
 
 from __future__ import annotations
 

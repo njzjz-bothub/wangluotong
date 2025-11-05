@@ -6,9 +6,9 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "python-template"  # Please revise this line.
+name = "ustcwlt"
 dynamic = ["version"]
-description = "A Python template."  # Please revise this line.
+description = "A command-line tool to log in to USTC WLT."
 authors = [
     { name = "Jinzhe Zeng", email = "jinzhe.zeng@ustc.edu.cn"},
 ]
@@ -24,16 +24,20 @@ classifiers = [
     "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
 ]
 dependencies = [
+    "requests",
 ]
 requires-python = ">=3.9"
 readme = "README.md"
 keywords = [
+    "ustc",
+    "wlt",
 ]
 
 [project.scripts]
+ustcwlt = "ustcwlt.__main__:main"
 
 [project.urls]
-repository = "https://github.com/njzjz/python-template"  # Please revise this line.
+repository = "https://github.com/njzjz/ustcwlt"
 
 [project.optional-dependencies]
 test = [
@@ -42,10 +46,10 @@ test = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["python_template*"]  # Please revise this line.
+include = ["ustcwlt*"]
 
 [tool.setuptools_scm]
-version_file = "python_template/_version.py"  # Please revise this line.
+version_file = "ustcwlt/_version.py"
 
 [tool.ruff.lint]
 select = [
@@ -84,4 +88,4 @@ required-imports = [
 ]
 
 [tool.coverage.report]
-include = ["python_template/*"]  # Please revise this line.
+include = ["ustcwlt/*"]
