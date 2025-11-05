@@ -68,11 +68,12 @@ def main() -> None:
     try:
         response = requests.post(url, data=data, timeout=10)
         response.raise_for_status()
-        # Note: Using HTTP as specified by the USTC WLT service
-        logger.info("Login successful!")
     except requests.exceptions.RequestException as e:
         logger.error("Login failed: %s", e)  # noqa: TRY400
         sys.exit(1)
+    else:
+        # Note: Using HTTP as specified by the USTC WLT service
+        logger.info("Login successful!")
 
 
 if __name__ == "__main__":
