@@ -6,7 +6,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ustcwlt"
+name = "wangluotong"
 dynamic = ["version"]
 description = "A command-line tool to log in to USTC WLT."
 authors = [
@@ -34,10 +34,10 @@ keywords = [
 ]
 
 [project.scripts]
-ustcwlt = "ustcwlt.__main__:main"
+wangluotong = "wangluotong.__main__:main"
 
 [project.urls]
-repository = "https://github.com/njzjz/ustcwlt"
+repository = "https://github.com/njzjz/wangluotong"
 
 [project.optional-dependencies]
 test = [
@@ -46,10 +46,10 @@ test = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["ustcwlt*"]
+include = ["wangluotong*"]
 
 [tool.setuptools_scm]
-version_file = "ustcwlt/_version.py"
+version_file = "wangluotong/_version.py"
 
 [tool.ruff.lint]
 select = [
@@ -88,4 +88,4 @@ required-imports = [
 ]
 
 [tool.coverage.report]
-include = ["ustcwlt/*"]
+include = ["wangluotong/*"]
