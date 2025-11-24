@@ -1,22 +1,22 @@
 # USTC WLT
 
-`ustcwlt` is a command-line tool to log in to USTC WLT.
+`wangluotong` is a command-line tool to log in to USTC WLT.
 
 ## Installation
 
 ```bash
-pip install ustcwlt
+pip install wangluotong
 ```
 
 ## Usage
 
 ```bash
-ustcwlt --username <username> --password <password>
+wangluotong --username <username> --password <password>
 ```
 
 You can also set environment variables:
 ```bash
-export USTCWLT_USERNAME=<username>
-export USTCWLT_PASSWORD=<password>
-ustcwlt
+export WANGLUOTONG_USERNAME=<username>
+export WANGLUOTONG_PASSWORD=<password>
+wangluotong
 ```

@@ -24,32 +24,32 @@ def main() -> None:
     )
 
     # Get environment variables
-    env_username = os.environ.get("USTCWLT_USERNAME")
-    env_password = os.environ.get("USTCWLT_PASSWORD")
+    env_username = os.environ.get("WANGLUOTONG_USERNAME")
+    env_password = os.environ.get("WANGLUOTONG_PASSWORD")
 
     parser.add_argument(
         "--username",
         default=env_username,
         required=env_username is None,
-        help="Username for USTC WLT (or set USTCWLT_USERNAME)",
+        help="Username for USTC WLT (or set WANGLUOTONG_USERNAME)",
     )
     parser.add_argument(
         "--password",
         default=env_password,
         required=env_password is None,
-        help="Password for USTC WLT (or set USTCWLT_PASSWORD)",
+        help="Password for USTC WLT (or set WANGLUOTONG_PASSWORD)",
     )
     parser.add_argument(
         "--type",
         type=int,
-        default=int(os.environ.get("USTCWLT_TYPE", "0")),
-        help="Type of network exit (0-7, default: 0, or set USTCWLT_TYPE)",
+        default=int(os.environ.get("WANGLUOTONG_TYPE", "0")),
+        help="Type of network exit (0-7, default: 0, or set WANGLUOTONG_TYPE)",
     )
     parser.add_argument(
         "--exp",
         type=int,
-        default=int(os.environ.get("USTCWLT_EXP", "0")),
-        help="Expired time (0 means no expiration, default: 0, or set USTCWLT_EXP)",
+        default=int(os.environ.get("WANGLUOTONG_EXP", "0")),
+        help="Expired time (0 means no expiration, default: 0, or set WANGLUOTONG_EXP)",
     )
 
     args = parser.parse_args()

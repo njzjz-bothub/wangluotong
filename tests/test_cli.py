@@ -9,14 +9,14 @@ from unittest.mock import MagicMock, patch
 import pytest
 import requests
 
-from ustcwlt.__main__ import main
+from wangluotong.__main__ import main
 
 
 def test_cli_help(capsys: pytest.CaptureFixture[str]) -> None:
     """Test CLI help message."""
     with (
         pytest.raises(SystemExit) as exc_info,
-        patch.object(sys, "argv", ["ustcwlt", "--help"]),
+        patch.object(sys, "argv", ["wangluotong", "--help"]),
     ):
         main()
     assert exc_info.value.code == 0
@@ -32,12 +32,12 @@ def test_cli_missing_username(
 ) -> None:
     """Test CLI with missing username."""
     # Clear any environment variables
-    monkeypatch.delenv("USTCWLT_USERNAME", raising=False)
-    monkeypatch.delenv("USTCWLT_PASSWORD", raising=False)
+    monkeypatch.delenv("WANGLUOTONG_USERNAME", raising=False)
+    monkeypatch.delenv("WANGLUOTONG_PASSWORD", raising=False)
 
     with (
         pytest.raises(SystemExit) as exc_info,
-        patch.object(sys, "argv", ["ustcwlt"]),
+        patch.object(sys, "argv", ["wangluotong"]),
     ):
         main()
     assert exc_info.value.code == 2
@@ -51,12 +51,12 @@ def test_cli_missing_password(
 ) -> None:
     """Test CLI with missing password."""
     # Clear any environment variables
-    monkeypatch.delenv("USTCWLT_USERNAME", raising=False)
-    monkeypatch.delenv("USTCWLT_PASSWORD", raising=False)
+    monkeypatch.delenv("WANGLUOTONG_USERNAME", raising=False)
+    monkeypatch.delenv("WANGLUOTONG_PASSWORD", raising=False)
 
     with (
         pytest.raises(SystemExit) as exc_info,
-        patch.object(sys, "argv", ["ustcwlt", "--username", "testuser"]),
+        patch.object(sys, "argv", ["wangluotong", "--username", "testuser"]),
     ):
         main()
     assert exc_info.value.code == 2
@@ -64,7 +64,7 @@ def test_cli_missing_password(
     assert "required: --password" in captured.err
 
 
-@patch("ustcwlt.__main__.requests.post")
+@patch("wangluotong.__main__.requests.post")
 def test_cli_success(
     mock_post: MagicMock,
     caplog: pytest.LogCaptureFixture,
@@ -79,7 +79,7 @@ def test_cli_success(
         patch.object(
             sys,
             "argv",
-            ["ustcwlt", "--username", "testuser", "--password", "testpass"],
+            ["wangluotong", "--username", "testuser", "--password", "testpass"],
         ),
     ):
         main()
@@ -97,7 +97,7 @@ def test_cli_success(
     assert call_args[1]["data"]["exp"] == "0"
 
 
-@patch("ustcwlt.__main__.requests.post")
+@patch("wangluotong.__main__.requests.post")
 def test_cli_with_custom_type_and_exp(
     mock_post: MagicMock,
 ) -> None:
@@ -110,7 +110,7 @@ def test_cli_with_custom_type_and_exp(
         sys,
         "argv",
         [
-            "ustcwlt",
+            "wangluotong",
             "--username",
             "testuser",
             "--password",
@@ -129,22 +129,22 @@ def test_cli_with_custom_type_and_exp(
     assert call_args[1]["data"]["exp"] == "60"
 
 
-@patch("ustcwlt.__main__.requests.post")
+@patch("wangluotong.__main__.requests.post")
 def test_cli_with_env_vars(
     mock_post: MagicMock,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Test CLI with environment variables."""
-    monkeypatch.setenv("USTCWLT_USERNAME", "envuser")
-    monkeypatch.setenv("USTCWLT_PASSWORD", "envpass")
-    monkeypatch.setenv("USTCWLT_TYPE", "2")
-    monkeypatch.setenv("USTCWLT_EXP", "30")
+    monkeypatch.setenv("WANGLUOTONG_USERNAME", "envuser")
+    monkeypatch.setenv("WANGLUOTONG_PASSWORD", "envpass")
+    monkeypatch.setenv("WANGLUOTONG_TYPE", "2")
+    monkeypatch.setenv("WANGLUOTONG_EXP", "30")
 
     mock_response = MagicMock()
     mock_response.text = "Success"
     mock_post.return_value = mock_response
 
-    with patch.object(sys, "argv", ["ustcwlt"]):
+    with patch.object(sys, "argv", ["wangluotong"]):
         main()
 
     # Verify the request used environment variables
@@ -155,7 +155,7 @@ def test_cli_with_env_vars(
     assert call_args[1]["data"]["exp"] == "30"
 
 
-@patch("ustcwlt.__main__.requests.post")
+@patch("wangluotong.__main__.requests.post")
 def test_cli_request_failure(
     mock_post: MagicMock,
     caplog: pytest.LogCaptureFixture,
@@ -169,7 +169,7 @@ def test_cli_request_failure(
         patch.object(
             sys,
             "argv",
-            ["ustcwlt", "--username", "testuser", "--password", "testpass"],
+            ["wangluotong", "--username", "testuser", "--password", "testpass"],
         ),
     ):
         main()
